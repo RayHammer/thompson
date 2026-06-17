@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://m8yulkgyg83q"]
+
+[ext_resource type="Script" uid="uid://dvbbkj0hiv3ab" path="res://Main.cs" id="1_b3bc3"]
+[ext_resource type="Script" uid="uid://ch366f2hxxd36" path="res://CaptionTextLabel.cs" id="2_3b2b5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b3bc3"]
+bg_color = Color(0.004019165, 0.004019165, 0.004019165, 1)
+
+[node name="UI" type="PanelContainer" unique_id=239823206 node_paths=PackedStringArray("_preview", "_textLog", "_input", "_submitButton")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b3bc3")
+_preview = NodePath("MarginContainer/VBoxContainer/Panel/Preview")
+_textLog = NodePath("MarginContainer/VBoxContainer/InputLog")
+_input = NodePath("MarginContainer/VBoxContainer/HBoxContainer/Input")
+_submitButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer/SubmitButton")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=266490377]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1692327367]
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=151895566]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_b3bc3")
+
+[node name="Preview" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Panel" unique_id=1798485614]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "This is the display test"
+horizontal_alignment = 1
+vertical_alignment = 1
+visible_characters_behavior = 2
+script = ExtResource("2_3b2b5")
+
+[node name="MenuBar" type="MenuBar" parent="MarginContainer/VBoxContainer" unique_id=923240582]
+visible = false
+layout_mode = 2
+
+[node name="Options" type="PopupMenu" parent="MarginContainer/VBoxContainer/MenuBar" unique_id=1710659842]
+oversampling_override = 1.0
+
+[node name="InputLog" type="TextEdit" parent="MarginContainer/VBoxContainer" unique_id=601585722]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+focus_neighbor_bottom = NodePath("../HBoxContainer/Input")
+focus_next = NodePath("../HBoxContainer/Input")
+editable = false
+emoji_menu_enabled = false
+virtual_keyboard_enabled = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1364431464]
+layout_mode = 2
+
+[node name="Input" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=458579936]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_top = NodePath("../../InputLog")
+focus_neighbor_right = NodePath("../SubmitButton")
+focus_next = NodePath("../SubmitButton")
+focus_previous = NodePath("../../InputLog")
+placeholder_text = "Print a message"
+keep_editing_on_text_submit = true
+clear_button_enabled = true
+
+[node name="SubmitButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1090204229]
+layout_mode = 2
+focus_neighbor_left = NodePath("../Input")
+focus_previous = NodePath("../Input")
+text = "Submit"
+
+[connection signal="text_submitted" from="MarginContainer/VBoxContainer/HBoxContainer/Input" to="." method="OnInputTextSubmitted"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SubmitButton" to="." method="OnSubmitButtonPressed"]
