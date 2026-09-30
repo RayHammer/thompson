@@ -52,6 +52,7 @@ namespace Thompson
             {
                 GD.Print($"Progressing to {_timelineEnum.Current}");
                 VisibleCharacters = _timelineEnum.Current.Position;
+                GD.Print($"'{Text.Substring(0, VisibleCharacters)}'");
                 _typeTimer.WaitTime = _timelineEnum.Current.Delay;
                 _typewriterType.Play();
                 _typeTimer.Start();
@@ -84,7 +85,7 @@ namespace Thompson
             _timeline.Clear();
             _timeline.Add(new CaptionNode(0, 0.1f));
             int i = 0;
-            while ((i = s.IndexOfAny(timelineSymbols, i)) != -1)
+            while (i < s.Length && (i = s.IndexOfAny(timelineSymbols, i)) != -1)
             {
                 int includedPunctuation = 1;
                 float delay = _delayBetweenWords;
@@ -95,19 +96,26 @@ namespace Thompson
                         break;
                     case ',':
                         delay = _delayComma;
+                        while (i + 1 == ' ')
+                            i++;
                         break;
                     case '.':
                     case '?':
                     case '!':
                         delay = _delayFullStop;
+                        while (i + 1 == ' ')
+                            i++;
                         break;
                     default:
                         break;
                 }
-                _timeline.Add(new CaptionNode(i + includedPunctuation, delay));
+                // allegedly removes timeline dupe on whitespace after punctuation
+                i += includedPunctuation;
+                _timeline.Add(new CaptionNode(i, delay));
                 i++;
             }
-            _timeline.Add(new CaptionNode(s.Length, _delayBetweenWords));
+            // removed to negate sound dupe at the very end of the string
+            // _timeline.Add(new CaptionNode(s.Length, _delayBetweenWords));
             GD.Print("Processing Ended");
         }
     }
