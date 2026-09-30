@@ -20,6 +20,12 @@ namespace Thompson
 
     public partial class CaptionTextLabel : RichTextLabel
     {
+        [Export]
+        private AudioStreamPlayer _typewriterType;
+
+        [Export]
+        private AudioStreamPlayer _typewriterEnd;
+
         private Timer _typeTimer;
         private List<CaptionNode> _timeline = new();
         private IEnumerator<CaptionNode> _timelineEnum;
@@ -47,7 +53,12 @@ namespace Thompson
                 GD.Print($"Progressing to {_timelineEnum.Current}");
                 VisibleCharacters = _timelineEnum.Current.Position;
                 _typeTimer.WaitTime = _timelineEnum.Current.Delay;
+                _typewriterType.Play();
                 _typeTimer.Start();
+            }
+            else
+            {
+                _typewriterEnd.Play();
             }
         }
 
