@@ -75,9 +75,13 @@ namespace Thompson
             int i = 0;
             while ((i = s.IndexOfAny(timelineSymbols, i)) != -1)
             {
+                int includedPunctuation = 1;
                 float delay = _delayBetweenWords;
                 switch (s[i])
                 {
+                    case ' ':
+                        includedPunctuation = 0;
+                        break;
                     case ',':
                         delay = _delayComma;
                         break;
@@ -89,7 +93,7 @@ namespace Thompson
                     default:
                         break;
                 }
-                _timeline.Add(new CaptionNode(i + 1, delay));
+                _timeline.Add(new CaptionNode(i + includedPunctuation, delay));
                 i++;
             }
             _timeline.Add(new CaptionNode(s.Length, _delayBetweenWords));
