@@ -86,6 +86,7 @@ text = "Submit"
 
 [node name="TypewriterType" type="AudioStreamPlayer" parent="." unique_id=1893516781]
 stream = ExtResource("3_g6l6n")
+max_polyphony = 4
 
 [node name="TypewriterEnd" type="AudioStreamPlayer" parent="." unique_id=471485421]
 stream = ExtResource("4_qui0h")

@@ -54,12 +54,17 @@ namespace Thompson
                 VisibleCharacters = _timelineEnum.Current.Position;
                 GD.Print($"'{Text.Substring(0, VisibleCharacters)}'");
                 _typeTimer.WaitTime = _timelineEnum.Current.Delay;
-                _typewriterType.Play();
+                if (VisibleCharacters < Text.Length - 1) {
+                    _typewriterType.Play();
+                }
+                else
+                {
+                    _typewriterEnd.Play();
+                }
                 _typeTimer.Start();
             }
             else
             {
-                _typewriterEnd.Play();
             }
         }
 
@@ -79,6 +84,7 @@ namespace Thompson
 
         public void ProcessString(string s)
         {
+            // TODO: This should probably be processed with regex.
             char[] timelineSymbols = [' ', ',', '.', '?', '!'];
 
             GD.Print("Processing Started...");
@@ -96,21 +102,19 @@ namespace Thompson
                         break;
                     case ',':
                         delay = _delayComma;
-                        while (i + 1 == ' ')
-                            i++;
                         break;
                     case '.':
                     case '?':
                     case '!':
                         delay = _delayFullStop;
-                        while (i + 1 == ' ')
-                            i++;
                         break;
                     default:
                         break;
                 }
+                while (i < s.Length && i + 1 == ' ')
+                    i++;
                 // allegedly removes timeline dupe on whitespace after punctuation
-                i += includedPunctuation;
+                // i += includedPunctuation;
                 _timeline.Add(new CaptionNode(i, delay));
                 i++;
             }
